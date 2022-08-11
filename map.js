@@ -12,7 +12,7 @@ function initMap() {
     var yourLat = 56.211379240824726, yourLng = -117.77755895147486;
     // Map options
     var mapOptions = {
-        zoom: 3,
+        zoom: 2,
         center: { lat: yourLat, lng: yourLng },
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         backgroundColor: '#FFF',
@@ -67,11 +67,35 @@ function initMap() {
     var geocoder = new google.maps.Geocoder();
 
 
-    // Overlay map of only US, Canada and Mexico
-    var swBound = new google.maps.LatLng(14.534430230140812, -171.84151589917622);
-    var neBound = new google.maps.LatLng(83.0754302181901, -52.62578437143278);
+    // Overlay map of US, Canada and Mexico
+    var swBound = new google.maps.LatLng(14.85, -171.84151589917622);
+    var neBound = new google.maps.LatLng(83.0954302181901, -52.69578437143278);
     var bounds = new google.maps.LatLngBounds(swBound, neBound);
     var srcImage = './map.png';
+    overlay = new USGSOverlay(bounds, srcImage, map);
+
+    // Norway top = 80.762077
+    // ukraine right = 40.169373
+    // Bouvet Island bottom = -54.252070
+    // Kralendijk left = -68.420964
+    
+    // Overlay map of Europe
+    var swBound = new google.maps.LatLng(-54.252070, -68.420964);
+    var neBound = new google.maps.LatLng(80.762077, 40.169373);
+    var bounds = new google.maps.LatLngBounds(swBound, neBound);
+    var srcImage = './Europe.png';
+    overlay = new USGSOverlay(bounds, srcImage, map);
+
+    // Tunisia Top: 37.348335
+    //British indian ocean trritory right: 72.507591 --  72.495136
+    // Bouvet Island bottom = -49.733519
+    // Cape Verde left = -25.361065
+
+    // Overlay map of Africa
+    var swBound = new google.maps.LatLng(-49.733519, -25.361065);
+    var neBound = new google.maps.LatLng(37.348335, 72.507591);
+    var bounds = new google.maps.LatLngBounds(swBound, neBound);
+    var srcImage = './Africa.png';
     overlay = new USGSOverlay(bounds, srcImage, map);
 
     // locateCurrentLocation();
