@@ -1,12 +1,30 @@
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const distance = urlParams.get('distance');
+    const timeSpent = urlParams.get('timeSpent');
+</script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFoY1ZlI4XPujxob2EdQMpxANh1jsABuY&v=3.exp&libraries=places&signed_in=false"></script>
+<script src="resultMap.js"></script>
+
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style type="text/css">
+        #map {
+            height: calc(100% - 180px);
+        }
+    </style>
 </head>
 
 <body>
     <div class="box-body content">
         <div class="col-md-12">
-            <div style="margin-top: 60px; margin-bottom: 20px; text-align: center;">
+            <div style="margin-top: 12px; margin-bottom: 20px; text-align: center;">
                 <h1>Geolocation Game</h1>
+            </div>
+            <div id="map"></div>
+            <div style="margin-top: 60px; margin-bottom: 20px; text-align: center;">
                 <h2 id="distance"></h2>
                 <h2 id="timeSpent"></h2>
                 <br><br>
@@ -16,9 +34,7 @@
     </div>
 
     <script>
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        document.getElementById("timeSpent").innerHTML = `Time spent: ${urlParams.get('timeSpent')}`;
-        document.getElementById("distance").innerHTML = `Distance between previously entered city and the point selected is ${urlParams.get('distance')} miles`;
+        document.getElementById("timeSpent").innerHTML = `Time spent: ${timeSpent}`;
+        document.getElementById("distance").innerHTML = `Distance between previously entered city and the point selected is ${distance} miles`;
     </script>
 </body>

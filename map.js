@@ -66,12 +66,16 @@ function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), mapOptions);
     var geocoder = new google.maps.Geocoder();
 
+    // left = -179.14162753118893  
+    // top = 83.07583564181145,
+    // right = -52.619445  -52.652175
+    // bottom = 14.80
 
     // Overlay map of US, Canada and Mexico
-    var swBound = new google.maps.LatLng(14.85, -171.84151589917622);
-    var neBound = new google.maps.LatLng(83.0954302181901, -52.69578437143278);
+    var swBound = new google.maps.LatLng(14.80, -179.14162753118893);
+    var neBound = new google.maps.LatLng(83.07583564181145, -52.652175);
     var bounds = new google.maps.LatLngBounds(swBound, neBound);
-    var srcImage = './map.png';
+    var srcImage = './AmericaCanadaMexico_2.png';
     overlay = new USGSOverlay(bounds, srcImage, map);
 
     // Norway top = 80.762077
@@ -83,7 +87,7 @@ function initMap() {
     var swBound = new google.maps.LatLng(-54.252070, -68.420964);
     var neBound = new google.maps.LatLng(80.762077, 40.169373);
     var bounds = new google.maps.LatLngBounds(swBound, neBound);
-    var srcImage = './Europe.png';
+    var srcImage = './Europe_2.png';
     overlay = new USGSOverlay(bounds, srcImage, map);
 
     // Tunisia Top: 37.348335
@@ -95,7 +99,7 @@ function initMap() {
     var swBound = new google.maps.LatLng(-49.733519, -25.361065);
     var neBound = new google.maps.LatLng(37.348335, 72.507591);
     var bounds = new google.maps.LatLngBounds(swBound, neBound);
-    var srcImage = './Africa.png';
+    var srcImage = './Africa_2.png';
     overlay = new USGSOverlay(bounds, srcImage, map);
 
     // locateCurrentLocation();
@@ -221,7 +225,7 @@ function initMap() {
         }
         var myLat = event.latLng.lat();
         var myLng = event.latLng.lng();
-        // console.log(myLat, myLng)
+        console.log(myLat, myLng)
         geocoder.geocode(
             {
                 'latLng': event.latLng
