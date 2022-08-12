@@ -87,8 +87,8 @@ function initMap() {
     overlay = new USGSOverlay(bounds, srcImage, map);
 
     // Tunisia Top: 37.348335
-    //British indian ocean trritory right: 72.507591 --  72.495136
-    // Bouvet Island bottom = -49.733519
+    // British indian ocean trritory right: 72.507591 --  72.495136
+    // French Southern and Antarctic Lands bottom = -49.733519
     // Cape Verde left = -25.361065
 
     // Overlay map of Africa
@@ -143,7 +143,7 @@ function initMap() {
         // var searchBox = new google.maps.places.SearchBox(input, {
         var autocomplete = new google.maps.places.Autocomplete(input, {
             types: ['(cities)'], // Search result limit added only for cities
-            componentRestrictions: { country: ["us", "ca", "mx"] }
+            // componentRestrictions: { country: ["us", "ca", "mx"] }
         });
     
         // Bind the map's bounds (viewport) property to the autocomplete object,
@@ -221,7 +221,7 @@ function initMap() {
         }
         var myLat = event.latLng.lat();
         var myLng = event.latLng.lng();
-        console.log(myLat, myLng)
+        // console.log(myLat, myLng)
         geocoder.geocode(
             {
                 'latLng': event.latLng
@@ -230,16 +230,134 @@ function initMap() {
                 let isInUSACanadaMexico = false;
                 if (status == google.maps.GeocoderStatus.OK) {
                     results.forEach(element => {
-                        console.log(element.address_components[element.address_components.length - 1].long_name)
-                        if (element.address_components[element.address_components.length - 1].long_name == 'Canada'
-                            || element.address_components[element.address_components.length - 1].long_name == 'United States'
-                            || element.address_components[element.address_components.length - 1].long_name == 'Mexico') {
+                        let countryName = element.address_components[element.address_components.length - 1].long_name;
+                        let countryList = ['United States', 'Canada', 'Mexico',
+                            /// European countries
+                            'Hungary',
+                            'Belarus',
+                            'Austria',
+                            'Serbia',
+                            'Switzerland',
+                            'Germany',
+                            'Holy See',
+                            'Andorra',
+                            'Bulgaria',
+                            'United Kingdom',
+                            'France',
+                            'Montenegro',
+                            'Luxembourg',
+                            'Italy',
+                            'Denmark',
+                            'Finland',
+                            'Slovakia',
+                            'Norway',
+                            'Svalbard and Jan Mayen',
+                            'Ireland',
+                            'Spain',
+                            'Malta',
+                            'Ukraine',
+                            'Croatia',
+                            'Moldova',
+                            'Monaco',
+                            'Liechtenstein',
+                            'Poland',
+                            'Iceland',
+                            'San Marino',
+                            'Bosnia and Herzegovina',
+                            'Albania',
+                            'Lithuania',
+                            'North Macedonia',
+                            'Slovenia',
+                            'Romania',
+                            'Latvia',
+                            'Netherlands',
+                            'Caribbean Netherlands',
+                            'Russia',
+                            'Estonia',
+                            'Belgium',
+                            'Czechia',
+                            'Greece',
+                            'Portugal',
+                            'Sweden',
+                            'Isle of Man',
+                            'Faeroe Islands',
+                            'Gibraltar',
+                            'Channel Islands',
+                            /// European countries
+
+                            /// African countries
+                            'Djibouti',
+                            'Seychelles',
+                            'DR Congo',
+                            'Comoros',
+                            'Togo',
+                            'Sierra Leone',
+                            'Libya',
+                            'Tanzania',
+                            'South Africa',
+                            'Cabo Verde',
+                            'Congo',
+                            'Kenya',
+                            'Liberia',
+                            'Central African Republic',
+                            'Mauritania',
+                            'Uganda',
+                            'Algeria',
+                            'Sudan',
+                            'Morocco',
+                            'Eritrea',
+                            'Angola',
+                            'Mozambique',
+                            'Ghana',
+                            'Madagascar',
+                            'Cameroon',
+                            "Côte d'Ivoire",
+                            'Namibia',
+                            'Niger',
+                            'Gambia',
+                            'Botswana',
+                            'Gabon',
+                            'São Tomé and Príncipe',
+                            'Lesotho',
+                            'Burkina Faso',
+                            'Nigeria',
+                            'Mali',
+                            'Guinea-Bissau',
+                            'Malawi',
+                            'Zambia',
+                            'Senegal',
+                            'Chad',
+                            'Somalia',
+                            'Zimbabwe',
+                            'Equatorial Guinea',
+                            'Guinea',
+                            'Rwanda',
+                            'Mauritius',
+                            'Benin',
+                            'Burundi',
+                            'Tunisia',
+                            'Eswatini',
+                            'Ethiopia',
+                            'South Sudan',
+                            'Egypt',
+                            'Réunion',
+                            'Saint Helena',
+                            'Western Sahara',
+                            'Mayotte',
+                            'Cape Verde',
+                            'French Southern and Antarctic Lands',
+                            'British Indian Ocean Territory',
+                            /// African countries
+                        ];
+                        console.log(countryName)
+                        const index = countryList.findIndex( item =>  item.toLowerCase() === countryName.toLowerCase());
+                        if (index !== -1) {
                             isInUSACanadaMexico = true;
                             return true;
                         }
                     });
                 }
-                console.log('isInUSACanadaMexico: ', isInUSACanadaMexico)
+                // console.log('isInUSACanadaMexico: ', isInUSACanadaMexico)
                 if (isInUSACanadaMexico) {
                     calculateDistance({ lat: myLat, lng: myLng })
                 }
