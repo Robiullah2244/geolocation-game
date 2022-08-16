@@ -5,10 +5,18 @@ var enteredCity = {
     lng: null
 };
 function initMap() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const region = urlParams.get('region');
+
     var yourLat = 56.211379240824726, yourLng = -117.77755895147486;
+    if(region == 'NorthAmerica') {yourLat = 56.211379240824726; yourLng = -117.77755895147486}
+    else if(region == 'Europe') {yourLat = 63.772076393350844; yourLng = 16.851560837631457}
+    else if(region == 'Africa') {yourLat = -3.195734213534522; yourLng = 14.721297653247087}
+
     // Map options
     var mapOptions = {
-        zoom: 2,
+        zoom: 3,
         center: { lat: yourLat, lng: yourLng },
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         backgroundColor: '#FFF',
@@ -67,36 +75,38 @@ function initMap() {
     // right = -52.619445  -52.652175
     // bottom = 14.80
 
-    // Overlay map of US, Canada and Mexico
-    var swBound = new google.maps.LatLng(14.80, -179.14162753118893);
-    var neBound = new google.maps.LatLng(83.07583564181145, -52.652175);
-    var bounds = new google.maps.LatLngBounds(swBound, neBound);
-    var srcImage = distance > 700 ? './AmericaCanadaMexico_4.png' : distance > 350 ? './AmericaCanadaMexico_3.png' : distance > 125 ? './AmericaCanadaMexico_2.png' : './AmericaCanadaMexico_1.png';
-    overlay = new USGSOverlay(bounds, srcImage, map);
+    if(region == 'NorthAmerica'){
+        // Overlay map of US, Canada and Mexico
+        var swBound = new google.maps.LatLng(14.80, -179.14162753118893);
+        var neBound = new google.maps.LatLng(83.07583564181145, -52.652175);
+        var bounds = new google.maps.LatLngBounds(swBound, neBound);
+        var srcImage = distance > 700 ? './AmericaCanadaMexico_4.png' : distance > 350 ? './AmericaCanadaMexico_3.png' : distance > 125 ? './AmericaCanadaMexico_2.png' : './AmericaCanadaMexico_1.png';
+        overlay = new USGSOverlay(bounds, srcImage, map);
+    }else if(region == 'Europe'){
+        // Norway top = 80.762077
+        // ukraine right = 40.169373
+        // Bouvet Island bottom = -54.252070
+        // Kralendijk left = -68.420964
+        
+        // Overlay map of Europe
+        var swBound = new google.maps.LatLng(-54.252070, -68.420964);
+        var neBound = new google.maps.LatLng(80.762077, 40.169373);
+        var bounds = new google.maps.LatLngBounds(swBound, neBound);
+        var srcImage = distance > 700 ? './Europe_4.png' : distance > 350 ? './Europe_3.png' : distance > 125 ? './Europe_2.png' : './Europe_1.png';
+        overlay = new USGSOverlay(bounds, srcImage, map);
+    }else if(region == 'Africa'){
+        // Tunisia Top: 37.348335
+        // British indian ocean trritory right: 72.507591 --  72.495136
+        // French Southern and Antarctic Lands bottom = -49.733519
+        // Cape Verde left = -25.361065
 
-    // Norway top = 80.762077
-    // ukraine right = 40.169373
-    // Bouvet Island bottom = -54.252070
-    // Kralendijk left = -68.420964
-    
-    // Overlay map of Europe
-    var swBound = new google.maps.LatLng(-54.252070, -68.420964);
-    var neBound = new google.maps.LatLng(80.762077, 40.169373);
-    var bounds = new google.maps.LatLngBounds(swBound, neBound);
-    var srcImage = distance > 700 ? './Europe_4.png' : distance > 350 ? './Europe_3.png' : distance > 125 ? './Europe_2.png' : './Europe_1.png';
-    overlay = new USGSOverlay(bounds, srcImage, map);
-
-    // Tunisia Top: 37.348335
-    // British indian ocean trritory right: 72.507591 --  72.495136
-    // French Southern and Antarctic Lands bottom = -49.733519
-    // Cape Verde left = -25.361065
-
-    // Overlay map of Africa
-    var swBound = new google.maps.LatLng(-49.733519, -25.361065);
-    var neBound = new google.maps.LatLng(37.348335, 72.507591);
-    var bounds = new google.maps.LatLngBounds(swBound, neBound);
-    var srcImage = distance > 700 ? './Africa_4.png' : distance > 350 ? './Africa_3.png' : distance > 125 ? './Africa_2.png' : './Africa_1.png';
-    overlay = new USGSOverlay(bounds, srcImage, map);
+        // Overlay map of Africa
+        var swBound = new google.maps.LatLng(-49.733519, -25.361065);
+        var neBound = new google.maps.LatLng(37.348335, 72.507591);
+        var bounds = new google.maps.LatLngBounds(swBound, neBound);
+        var srcImage = distance > 700 ? './Africa_4.png' : distance > 350 ? './Africa_3.png' : distance > 125 ? './Africa_2.png' : './Africa_1.png';
+        overlay = new USGSOverlay(bounds, srcImage, map);
+    }
 }
 function USGSOverlay(bounds, image, map) {
 

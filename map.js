@@ -1,7 +1,4 @@
 
-
-
-
 var overlay;
 USGSOverlay.prototype = new google.maps.OverlayView();
 var enteredCity = {
@@ -9,10 +6,18 @@ var enteredCity = {
     lng: null
 };
 function initMap() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const region = urlParams.get('region');
+
     var yourLat = 56.211379240824726, yourLng = -117.77755895147486;
+    if(region == 'NorthAmerica') {yourLat = 56.211379240824726; yourLng = -117.77755895147486}
+    else if(region == 'Europe') {yourLat = 63.772076393350844; yourLng = 16.851560837631457}
+    else if(region == 'Africa') {yourLat = -3.195734213534522; yourLng = 14.721297653247087}
+     
     // Map options
     var mapOptions = {
-        zoom: 2,
+        zoom: 3,
         center: { lat: yourLat, lng: yourLng },
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         backgroundColor: '#FFF',
@@ -71,36 +76,38 @@ function initMap() {
     // right = -52.619445  -52.652175
     // bottom = 14.80
 
-    // Overlay map of US, Canada and Mexico
-    var swBound = new google.maps.LatLng(14.80, -179.14162753118893);
-    var neBound = new google.maps.LatLng(83.07583564181145, -52.652175);
-    var bounds = new google.maps.LatLngBounds(swBound, neBound);
-    var srcImage = './AmericaCanadaMexico_2.png';
-    overlay = new USGSOverlay(bounds, srcImage, map);
+    if(region == 'NorthAmerica'){
+        // Overlay map of US, Canada and Mexico
+        var swBound = new google.maps.LatLng(14.80, -179.14162753118893);
+        var neBound = new google.maps.LatLng(83.07583564181145, -52.652175);
+        var bounds = new google.maps.LatLngBounds(swBound, neBound);
+        var srcImage = './AmericaCanadaMexico_2.png';
+        overlay = new USGSOverlay(bounds, srcImage, map);
+    }else if(region == 'Europe'){
+        // Norway top = 80.762077
+        // ukraine right = 40.169373
+        // Bouvet Island bottom = -54.252070
+        // Kralendijk left = -68.420964
+        
+        // Overlay map of Europe
+        var swBound = new google.maps.LatLng(-54.252070, -68.420964);
+        var neBound = new google.maps.LatLng(80.762077, 40.169373);
+        var bounds = new google.maps.LatLngBounds(swBound, neBound);
+        var srcImage = './Europe_2.png';
+        overlay = new USGSOverlay(bounds, srcImage, map);
+    }else if(region == 'Africa'){
+        // Tunisia Top: 37.348335
+        // British indian ocean trritory right: 72.507591 --  72.495136
+        // French Southern and Antarctic Lands bottom = -49.733519
+        // Cape Verde left = -25.361065
 
-    // Norway top = 80.762077
-    // ukraine right = 40.169373
-    // Bouvet Island bottom = -54.252070
-    // Kralendijk left = -68.420964
-    
-    // Overlay map of Europe
-    var swBound = new google.maps.LatLng(-54.252070, -68.420964);
-    var neBound = new google.maps.LatLng(80.762077, 40.169373);
-    var bounds = new google.maps.LatLngBounds(swBound, neBound);
-    var srcImage = './Europe_2.png';
-    overlay = new USGSOverlay(bounds, srcImage, map);
-
-    // Tunisia Top: 37.348335
-    // British indian ocean trritory right: 72.507591 --  72.495136
-    // French Southern and Antarctic Lands bottom = -49.733519
-    // Cape Verde left = -25.361065
-
-    // Overlay map of Africa
-    var swBound = new google.maps.LatLng(-49.733519, -25.361065);
-    var neBound = new google.maps.LatLng(37.348335, 72.507591);
-    var bounds = new google.maps.LatLngBounds(swBound, neBound);
-    var srcImage = './Africa_2.png';
-    overlay = new USGSOverlay(bounds, srcImage, map);
+        // Overlay map of Africa
+        var swBound = new google.maps.LatLng(-49.733519, -25.361065);
+        var neBound = new google.maps.LatLng(37.348335, 72.507591);
+        var bounds = new google.maps.LatLngBounds(swBound, neBound);
+        var srcImage = './Africa_2.png';
+        overlay = new USGSOverlay(bounds, srcImage, map);
+    }
 
     // locateCurrentLocation();
 
@@ -138,14 +145,53 @@ function initMap() {
     //Locate Your Location End Here
     ///----------------------------------------
 
-
-    if(document.getElementById('pac-input')){
+    if(document.getElementById('pac-input-NorthAmerica')){
         ///Search option Section Start here----------------
         ///----------------------------------------
         // Create the search box and link it to the UI element.
-        var input = document.getElementById('pac-input');
+        let input = document.getElementById('pac-input-NorthAmerica');
         // var searchBox = new google.maps.places.SearchBox(input, {
-        var autocomplete = new google.maps.places.Autocomplete(input, {
+        let autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ['(cities)'], // Search result limit added only for cities
+            componentRestrictions: { country: ["us", "ca", "mx"] }
+        });
+    
+        // Bind the map's bounds (viewport) property to the autocomplete object,
+        // so that the autocomplete requests use the current map bounds for the
+        // bounds option in the request.
+        autocomplete.bindTo("bounds", map);
+    
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        autocomplete.addListener('place_changed', function () {
+            let place = autocomplete.getPlace();
+    
+            if (!place?.geometry) {
+                console.log("Returned place contains no geometry");
+                return;
+            }
+    
+            let myLat = place.geometry.location.lat();
+            let myLng = place.geometry.location.lng();
+    
+            enteredCity = {
+                lat: myLat,
+                lng: myLng
+            }
+            document.getElementById('enteredCityId').innerHTML = `<br/><br/>Your entered city: <b>${place.formatted_address}</b>`;
+            citySelected && citySelected({region: 'NorthAmerica'})
+        });
+        ///Search option Section End here----------------
+        ///----------------------------------------
+    }
+
+    if(document.getElementById('pac-input-Europe')){
+        ///Search option Section Start here----------------
+        ///----------------------------------------
+        // Create the search box and link it to the UI element.
+        let input = document.getElementById('pac-input-Europe');
+        // var searchBox = new google.maps.places.SearchBox(input, {
+        let autocomplete = new google.maps.places.Autocomplete(input, {
             types: ['(cities)'], // Search result limit added only for cities
             // componentRestrictions: { country: ["us", "ca", "mx"] }
         });
@@ -158,27 +204,66 @@ function initMap() {
         // Listen for the event fired when the user selects a prediction and retrieve
         // more details for that place.
         autocomplete.addListener('place_changed', function () {
-            var place = autocomplete.getPlace();
+            let place = autocomplete.getPlace();
     
-            if (!place.geometry) {
+            if (!place?.geometry) {
                 console.log("Returned place contains no geometry");
                 return;
             }
     
-            var myLat = place.geometry.location.lat();
-            var myLng = place.geometry.location.lng();
+            let myLat = place.geometry.location.lat();
+            let myLng = place.geometry.location.lng();
     
             enteredCity = {
                 lat: myLat,
                 lng: myLng
             }
             document.getElementById('enteredCityId').innerHTML = `<br/><br/>Your entered city: <b>${place.formatted_address}</b>`;
-            citySelected && citySelected()
+            citySelected && citySelected({region: 'Europe'})
         });
         ///Search option Section End here----------------
         ///----------------------------------------
     }
 
+    if(document.getElementById('pac-input-Africa')){
+        ///Search option Section Start here----------------
+        ///----------------------------------------
+        // Create the search box and link it to the UI element.
+        let input = document.getElementById('pac-input-Africa');
+        // var searchBox = new google.maps.places.SearchBox(input, {
+        let autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ['(cities)'], // Search result limit added only for cities
+            // componentRestrictions: { country: ["us", "ca", "mx"] }
+        });
+    
+        // Bind the map's bounds (viewport) property to the autocomplete object,
+        // so that the autocomplete requests use the current map bounds for the
+        // bounds option in the request.
+        autocomplete.bindTo("bounds", map);
+    
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        autocomplete.addListener('place_changed', function () {
+            let place = autocomplete.getPlace();
+    
+            if (!place?.geometry) {
+                console.log("Returned place contains no geometry");
+                return;
+            }
+    
+            let myLat = place.geometry.location.lat();
+            let myLng = place.geometry.location.lng();
+    
+            enteredCity = {
+                lat: myLat,
+                lng: myLng
+            }
+            document.getElementById('enteredCityId').innerHTML = `<br/><br/>Your entered city: <b>${place.formatted_address}</b>`;
+            citySelected && citySelected({region: 'Africa'})
+        });
+        ///Search option Section End here----------------
+        ///----------------------------------------
+    }
 
     ///Calculate distance Section Start here----------------
     ///----------------------------------------
@@ -223,8 +308,8 @@ function initMap() {
         if (enteredCity.lat == null || enteredCity.lng == null) {
             return Swal.fire('Please enter a city first!', '', 'warning')
         }
-        var myLat = event.latLng.lat();
-        var myLng = event.latLng.lng();
+        let myLat = event.latLng.lat();
+        let myLng = event.latLng.lng();
         console.log(myLat, myLng)
         geocoder.geocode(
             {
@@ -235,124 +320,133 @@ function initMap() {
                 if (status == google.maps.GeocoderStatus.OK) {
                     results.forEach(element => {
                         let countryName = element.address_components[element.address_components.length - 1].long_name;
-                        let countryList = ['United States', 'Canada', 'Mexico',
-                            /// European countries
-                            'Hungary',
-                            'Belarus',
-                            'Austria',
-                            'Serbia',
-                            'Switzerland',
-                            'Germany',
-                            'Holy See',
-                            'Andorra',
-                            'Bulgaria',
-                            'United Kingdom',
-                            'France',
-                            'Montenegro',
-                            'Luxembourg',
-                            'Italy',
-                            'Denmark',
-                            'Finland',
-                            'Slovakia',
-                            'Norway',
-                            'Svalbard and Jan Mayen',
-                            'Ireland',
-                            'Spain',
-                            'Malta',
-                            'Ukraine',
-                            'Croatia',
-                            'Moldova',
-                            'Monaco',
-                            'Liechtenstein',
-                            'Poland',
-                            'Iceland',
-                            'San Marino',
-                            'Bosnia and Herzegovina',
-                            'Albania',
-                            'Lithuania',
-                            'North Macedonia',
-                            'Slovenia',
-                            'Romania',
-                            'Latvia',
-                            'Netherlands',
-                            'Caribbean Netherlands',
-                            'Russia',
-                            'Estonia',
-                            'Belgium',
-                            'Czechia',
-                            'Greece',
-                            'Portugal',
-                            'Sweden',
-                            'Isle of Man',
-                            'Faeroe Islands',
-                            'Gibraltar',
-                            'Channel Islands',
-                            /// European countries
-
-                            /// African countries
-                            'Djibouti',
-                            'Seychelles',
-                            'DR Congo',
-                            'Comoros',
-                            'Togo',
-                            'Sierra Leone',
-                            'Libya',
-                            'Tanzania',
-                            'South Africa',
-                            'Cabo Verde',
-                            'Congo',
-                            'Kenya',
-                            'Liberia',
-                            'Central African Republic',
-                            'Mauritania',
-                            'Uganda',
-                            'Algeria',
-                            'Sudan',
-                            'Morocco',
-                            'Eritrea',
-                            'Angola',
-                            'Mozambique',
-                            'Ghana',
-                            'Madagascar',
-                            'Cameroon',
-                            "Côte d'Ivoire",
-                            'Namibia',
-                            'Niger',
-                            'Gambia',
-                            'Botswana',
-                            'Gabon',
-                            'São Tomé and Príncipe',
-                            'Lesotho',
-                            'Burkina Faso',
-                            'Nigeria',
-                            'Mali',
-                            'Guinea-Bissau',
-                            'Malawi',
-                            'Zambia',
-                            'Senegal',
-                            'Chad',
-                            'Somalia',
-                            'Zimbabwe',
-                            'Equatorial Guinea',
-                            'Guinea',
-                            'Rwanda',
-                            'Mauritius',
-                            'Benin',
-                            'Burundi',
-                            'Tunisia',
-                            'Eswatini',
-                            'Ethiopia',
-                            'South Sudan',
-                            'Egypt',
-                            'Réunion',
-                            'Saint Helena',
-                            'Western Sahara',
-                            'Mayotte',
-                            'Cape Verde',
-                            'French Southern and Antarctic Lands',
-                            'British Indian Ocean Territory',
-                            /// African countries
-                        ];
+                        let countryList = [];
+                        if(region == 'NorthAmerica') {
+                            countryList = ['United States', 'Canada', 'Mexico'];
+                        }
+                        else if(region == 'Europe') {
+                            countryList = [
+                                /// European countries
+                                'Hungary',
+                                'Belarus',
+                                'Austria',
+                                'Serbia',
+                                'Switzerland',
+                                'Germany',
+                                'Holy See',
+                                'Andorra',
+                                'Bulgaria',
+                                'United Kingdom',
+                                'France',
+                                'Montenegro',
+                                'Luxembourg',
+                                'Italy',
+                                'Denmark',
+                                'Finland',
+                                'Slovakia',
+                                'Norway',
+                                'Svalbard and Jan Mayen',
+                                'Ireland',
+                                'Spain',
+                                'Malta',
+                                'Ukraine',
+                                'Croatia',
+                                'Moldova',
+                                'Monaco',
+                                'Liechtenstein',
+                                'Poland',
+                                'Iceland',
+                                'San Marino',
+                                'Bosnia and Herzegovina',
+                                'Albania',
+                                'Lithuania',
+                                'North Macedonia',
+                                'Slovenia',
+                                'Romania',
+                                'Latvia',
+                                'Netherlands',
+                                'Caribbean Netherlands',
+                                'Russia',
+                                'Estonia',
+                                'Belgium',
+                                'Czechia',
+                                'Greece',
+                                'Portugal',
+                                'Sweden',
+                                'Isle of Man',
+                                'Faeroe Islands',
+                                'Gibraltar',
+                                'Channel Islands',
+                                /// European countries;
+                            ];
+                        }
+                        else if(region == 'Africa') {
+                            countryList = [
+                                /// African countries
+                                'Djibouti',
+                                'Seychelles',
+                                'DR Congo',
+                                'Comoros',
+                                'Togo',
+                                'Sierra Leone',
+                                'Libya',
+                                'Tanzania',
+                                'South Africa',
+                                'Cabo Verde',
+                                'Congo',
+                                'Kenya',
+                                'Liberia',
+                                'Central African Republic',
+                                'Mauritania',
+                                'Uganda',
+                                'Algeria',
+                                'Sudan',
+                                'Morocco',
+                                'Eritrea',
+                                'Angola',
+                                'Mozambique',
+                                'Ghana',
+                                'Madagascar',
+                                'Cameroon',
+                                "Côte d'Ivoire",
+                                'Namibia',
+                                'Niger',
+                                'Gambia',
+                                'Botswana',
+                                'Gabon',
+                                'São Tomé and Príncipe',
+                                'Lesotho',
+                                'Burkina Faso',
+                                'Nigeria',
+                                'Mali',
+                                'Guinea-Bissau',
+                                'Malawi',
+                                'Zambia',
+                                'Senegal',
+                                'Chad',
+                                'Somalia',
+                                'Zimbabwe',
+                                'Equatorial Guinea',
+                                'Guinea',
+                                'Rwanda',
+                                'Mauritius',
+                                'Benin',
+                                'Burundi',
+                                'Tunisia',
+                                'Eswatini',
+                                'Ethiopia',
+                                'South Sudan',
+                                'Egypt',
+                                'Réunion',
+                                'Saint Helena',
+                                'Western Sahara',
+                                'Mayotte',
+                                'Cape Verde',
+                                'French Southern and Antarctic Lands',
+                                'British Indian Ocean Territory',
+                                /// African countries
+                            ];
+                        }
                         console.log(countryName)
                         const index = countryList.findIndex( item =>  item.toLowerCase() === countryName.toLowerCase());
                         if (index !== -1) {

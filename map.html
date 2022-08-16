@@ -86,7 +86,10 @@
 
         distanceCalculationDone = (distance) => {
             // Swal.fire(`Distance between previously entered city and the point selected is ${ans.toFixed(2)} miles`, '', 'warning')
-            window.location.href = `./result.html?distance=${distance.toFixed(2)}&timeSpent=${timeSpent}`
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const region = urlParams.get('region');
+            window.location.href = `./result.html?distance=${distance.toFixed(2)}&timeSpent=${timeSpent}&region=${region}`;
         }
     </script>
 </body>

@@ -4,7 +4,7 @@
 
 <head>
     <style type="text/css">
-        #pac-input {
+        .pac-input {
             background-color: #fff;
             font-family: Roboto;
             font-size: 36px;
@@ -16,7 +16,7 @@
             height: 60px;
         }
 
-        #pac-input:focus {
+        .pac-input:focus {
             border-color: #4d90fe;
         }
 
@@ -38,7 +38,9 @@
             <div style="margin-top: 60px; margin-bottom: 20px; text-align: center;">
                 <h1>Geolocation Game</h1>
                 <h2>Enter a city</h2>
-                <input id="pac-input" type="text" placeholder="Search Box" />
+                <input id="pac-input-NorthAmerica" class="pac-input" type="text" placeholder="Noth America" />
+                <input id="pac-input-Europe" class="pac-input" type="text" placeholder="Europe" />
+                <input id="pac-input-Africa" class="pac-input" type="text" placeholder="Africa" />
                 <span id="enteredCityId"></span>
                 <br><br>
             </div>
@@ -47,8 +49,8 @@
     </div>
     <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script> -->
     <script>
-        citySelected = () => {
-            window.location.href = `./map.html?lat=${enteredCity.lat}&lng=${enteredCity.lng}`
+        citySelected = ({region}) => {
+            window.location.href = `./map.html?lat=${enteredCity.lat}&lng=${enteredCity.lng}&region=${region}`;
         }
     </script>
 </body>
