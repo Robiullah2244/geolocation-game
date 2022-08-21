@@ -1,0 +1,97 @@
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFoY1ZlI4XPujxob2EdQMpxANh1jsABuY&v=3.exp&libraries=places&signed_in=false"></script>
+<script src="map.js"></script>
+<script src="cookies.js"></script>
+
+<head>
+    <style type="text/css">
+        #pac-input {
+            background-color: #fff;
+            font-family: Roboto;
+            font-size: 14px;
+            font-weight: 350;
+            margin-left: auto;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 400px;
+            height: 28px;
+        }
+
+        #pac-input:focus {
+            border-color: #4d90fe;
+        }
+
+        input[type=number] {
+            width: 220px;
+        }
+
+        input[type=text] {
+            width: 220px;
+        }
+
+        #map {
+            height: calc(100% - 120px);
+        }
+    </style>
+    <title>Geolocation Game</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="box-body content">
+        <div class="col-md-12">
+            <div style="margin-top: 60px; margin-bottom: 20px; text-align: center;">
+                <h1>Geolocation Game</h1>
+                <h3 id="timer">Time spent: 0d 0h 0m 0s</h3>
+                <span>Click on the map you think <b>Paris, France</b> is located</span>
+            </div>
+            <div id="map"></div>
+            <!-- <img id="current-location-icon" src="https://icon-library.com/images/position-icon/position-icon-19.jpg"
+                style="width: 40px; cursor:pointer; background-color:white; margin-right:10px"
+                title="Tap to get current location" /> -->
+        </div>
+    </div>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script> -->
+    <script>
+        enteredCity = { /// Paris, France
+            lat: 48.8566,
+            lng: 2.3522
+        }
+        var region = 'Europe';
+
+        // Set the date we're counting up to
+        var startDate = new Date().getTime();
+        var timeSpent = '';
+
+        // Update the count up every 1 second
+        var x = setInterval(function () {
+
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count up date
+            var distance = now - startDate;
+
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            timeSpent = days + "d " + hours + "h " + minutes + "m " + seconds + "s "
+            // Display the result in the element with id="timer"
+            document.getElementById("timer").innerHTML = 'Time spent: ' + timeSpent;
+        }, 1000);
+
+        distanceCalculationDone = (distance) => {
+            // alert(`distance:${distance.toFixed(2)},timeSpent:${timeSpent}`)
+            let data = {
+                distance: distance,
+                timeSpent: timeSpent,
+                region: region
+            }
+            setCookie('europeData', JSON.stringify(data), 1);
+            window.location.href = `./mapAfrica.html`;
+        }
+    </script>
+</body>

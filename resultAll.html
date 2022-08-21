@@ -1,0 +1,68 @@
+<script src="cookies.js"></script>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const distance = urlParams.get('distance');
+    const timeSpent = urlParams.get('timeSpent');
+
+    var northAmericaData =  getCookie('northAmericaData');
+    var europeData =  getCookie('europeData');
+    var africaData =  getCookie('africaData');
+    console.log(`northAmericaData: `, northAmericaData);
+    console.log(`europeData: `, europeData)
+    console.log(`africaData: `, africaData)
+
+    if (northAmericaData) {
+        northAmericaData = JSON.parse(northAmericaData);
+    }
+    if (europeData) {
+        europeData = JSON.parse(europeData);
+    }
+    if (africaData) {
+        africaData = JSON.parse(africaData);
+    }
+
+    console.log(`northAmericaData JSON.parse: `, northAmericaData);
+    console.log(`europeData JSON.parse: `, europeData)
+    console.log(`africaData JSON.parse: `, africaData)
+
+</script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFoY1ZlI4XPujxob2EdQMpxANh1jsABuY&v=3.exp&libraries=places&signed_in=false"></script>
+<script src="resultAllMap.js"></script>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style type="text/css">
+        #map {
+            height: calc(100% - 180px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box-body content">
+        <div class="col-md-12">
+            <div style="margin-top: 12px; margin-bottom: 20px; text-align: center;">
+                <h1>Geolocation Game</h1>
+            </div>
+            <div id="map"></div>
+            <div style="margin-top: 60px; margin-bottom: 20px; text-align: center;">
+                <!-- <h2 id="distance"></h2> -->
+                <span id="timeSpent" style="font-size: 20px;"></span>
+                <br><br>
+            </div>
+            <h1></h1>
+        </div>
+    </div>
+
+    <script>
+        // document.getElementById("timeSpent").innerHTML = `Time spent: ${timeSpent}`;
+        // document.getElementById("distance").innerHTML = `Distance between previously entered city and the point selected is ${distance} miles`;
+        document.getElementById("timeSpent").innerHTML = `
+            <b>Los Angeles, CA:</b> Guese distance is <b>${northAmericaData?.distance}</b> miles and you took <b>${northAmericaData?.timeSpent}</b><br/>
+            <b>Paris, France:</b> Guese distance is <b>${europeData?.distance}</b> miles and you took <b>${europeData?.timeSpent}</b><br/>
+            <b>Lagos, Nigeria:</b> Guese distance is <b>${africaData?.distance}</b> miles and you took <b>${africaData?.timeSpent}</b>
+        `;
+    </script>
+</body>

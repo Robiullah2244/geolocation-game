@@ -5,11 +5,12 @@ var enteredCity = {
     lat: null,
     lng: null
 };
-function initMap() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const region = urlParams.get('region');
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+var region = region || urlParams.get('region');
+
+function initMap() {
     var yourLat = 56.211379240824726, yourLng = -117.77755895147486;
     if(region == 'NorthAmerica') {yourLat = 56.211379240824726; yourLng = -117.77755895147486}
     else if(region == 'Europe') {yourLat = 63.772076393350844; yourLng = 16.851560837631457}
@@ -444,6 +445,7 @@ function initMap() {
                                 'Cape Verde',
                                 'French Southern and Antarctic Lands',
                                 'British Indian Ocean Territory',
+                                'Democratic Republic of the Congo',
                                 /// African countries
                             ];
                         }
