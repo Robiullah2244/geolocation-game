@@ -446,6 +446,7 @@ function initMap() {
                                 'French Southern and Antarctic Lands',
                                 'British Indian Ocean Territory',
                                 'Democratic Republic of the Congo',
+                                'Republic of the Congo',
                                 /// African countries
                             ];
                         }
