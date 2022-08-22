@@ -26,25 +26,20 @@ function initMap() {
         // draggable: false,
         // scaleControl: false,
         // scrollwheel: false,
-        styles: [
+        styles:  region == 'NorthAmerica' ? [
             {
-                "featureType": "water",
-                "elementType": "geometry",
-                "stylers": [
-                    { "visibility": "off" }
-                ]
+                // "featureType": "water",
+                // "elementType": "geometry",
+                // "stylers": [
+                //     { "visibility": "off" }
+                // ]
             }, {
-                "featureType": "landscape",
-                "stylers": [
-                    { "visibility": "off" }
-                ]
+                // "featureType": "landscape",
+                // "stylers": [
+                //     { "visibility": "off" }
+                // ]
             }, {
                 "featureType": "road",
-                "stylers": [
-                    { "visibility": "off" }
-                ]
-            }, {
-                "featureType": "administrative",
                 "stylers": [
                     { "visibility": "off" }
                 ]
@@ -66,6 +61,79 @@ function initMap() {
             }, {
             }
         ]
+        :
+        region == 'Europe' ?
+        [
+            {
+                // "featureType": "water",
+                // "elementType": "geometry",
+                // "stylers": [
+                //     { "visibility": "off" }
+                // ]
+            }, {
+                // "featureType": "landscape",
+                // "stylers": [
+                //     { "visibility": "off" }
+                // ]
+            }, {
+                // "featureType": "road",
+                // "stylers": [
+                //     { "visibility": "off" }
+                // ]
+            }, {
+                "featureType": "poi",
+                "stylers": [
+                    { "visibility": "off" }
+                ]
+            }, {
+                "featureType": "administrative",
+                "stylers": [
+                    { "visibility": "off" }
+                ]
+            }, {
+                "elementType": "labels",
+                "stylers": [
+                    { "visibility": "off" }
+                ]
+            }, {
+            }
+        ]
+        :
+        [
+            {
+                // "featureType": "water",
+                // "elementType": "geometry",
+                // "stylers": [
+                //     { "visibility": "off" }
+                // ]
+            }, {
+                // "featureType": "landscape",
+                // "stylers": [
+                //     { "visibility": "off" }
+                // ]
+            }, {
+                // "featureType": "road",
+                // "stylers": [
+                //     { "visibility": "off" }
+                // ]
+            }, {
+                "featureType": "poi",
+                "stylers": [
+                    { "visibility": "off" }
+                ]
+            }, {
+                "featureType": "administrative",
+                "stylers": [
+                    { "visibility": "off" }
+                ]
+            }, {
+                // "elementType": "labels",
+                // "stylers": [
+                //     { "visibility": "off" }
+                // ]
+            }, {
+            }
+        ]
     };
 
     // New map
@@ -77,38 +145,38 @@ function initMap() {
     // right = -52.619445  -52.652175
     // bottom = 14.80
 
-    if(region == 'NorthAmerica'){
-        // Overlay map of US, Canada and Mexico
-        var swBound = new google.maps.LatLng(14.80, -179.14162753118893);
-        var neBound = new google.maps.LatLng(83.07583564181145, -52.652175);
-        var bounds = new google.maps.LatLngBounds(swBound, neBound);
-        var srcImage = './AmericaCanadaMexico_2.png';
-        overlay = new USGSOverlay(bounds, srcImage, map);
-    }else if(region == 'Europe'){
-        // Norway top = 80.762077
-        // ukraine right = 40.169373
-        // Bouvet Island bottom = -54.252070
-        // Kralendijk left = -68.420964
+    // if(region == 'NorthAmerica'){
+    //     // Overlay map of US, Canada and Mexico
+    //     var swBound = new google.maps.LatLng(14.80, -179.14162753118893);
+    //     var neBound = new google.maps.LatLng(83.07583564181145, -52.652175);
+    //     var bounds = new google.maps.LatLngBounds(swBound, neBound);
+    //     var srcImage = './AmericaCanadaMexico_2.png';
+    //     overlay = new USGSOverlay(bounds, srcImage, map);
+    // }else if(region == 'Europe'){
+    //     // Norway top = 80.762077
+    //     // ukraine right = 40.169373
+    //     // Bouvet Island bottom = -54.252070
+    //     // Kralendijk left = -68.420964
         
-        // Overlay map of Europe
-        var swBound = new google.maps.LatLng(-54.252070, -68.420964);
-        var neBound = new google.maps.LatLng(80.762077, 40.169373);
-        var bounds = new google.maps.LatLngBounds(swBound, neBound);
-        var srcImage = './Europe_2.png';
-        overlay = new USGSOverlay(bounds, srcImage, map);
-    }else if(region == 'Africa'){
-        // Tunisia Top: 37.348335
-        // British indian ocean trritory right: 72.507591 --  72.495136
-        // French Southern and Antarctic Lands bottom = -49.733519
-        // Cape Verde left = -25.361065
+    //     // Overlay map of Europe
+    //     var swBound = new google.maps.LatLng(-54.252070, -68.420964);
+    //     var neBound = new google.maps.LatLng(80.762077, 40.169373);
+    //     var bounds = new google.maps.LatLngBounds(swBound, neBound);
+    //     var srcImage = './Europe_2.png';
+    //     overlay = new USGSOverlay(bounds, srcImage, map);
+    // }else if(region == 'Africa'){
+    //     // Tunisia Top: 37.348335
+    //     // British indian ocean trritory right: 72.507591 --  72.495136
+    //     // French Southern and Antarctic Lands bottom = -49.733519
+    //     // Cape Verde left = -25.361065
 
-        // Overlay map of Africa
-        var swBound = new google.maps.LatLng(-49.733519, -25.361065);
-        var neBound = new google.maps.LatLng(37.348335, 72.507591);
-        var bounds = new google.maps.LatLngBounds(swBound, neBound);
-        var srcImage = './Africa_2.png';
-        overlay = new USGSOverlay(bounds, srcImage, map);
-    }
+    //     // Overlay map of Africa
+    //     var swBound = new google.maps.LatLng(-49.733519, -25.361065);
+    //     var neBound = new google.maps.LatLng(37.348335, 72.507591);
+    //     var bounds = new google.maps.LatLngBounds(swBound, neBound);
+    //     var srcImage = './Africa_2.png';
+    //     overlay = new USGSOverlay(bounds, srcImage, map);
+    // }
 
     // locateCurrentLocation();
 
