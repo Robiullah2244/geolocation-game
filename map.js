@@ -12,7 +12,7 @@ var region = region || urlParams.get('region');
 
 function initMap() {
     var yourLat = 56.211379240824726, yourLng = -117.77755895147486;
-    if(region == 'NorthAmerica') {yourLat = 56.211379240824726; yourLng = -117.77755895147486}
+    if(region == 'NorthAmerica') {yourLat = 66.211379240824726; yourLng = -105.77755895147486}
     else if(region == 'Europe') {yourLat = 63.772076393350844; yourLng = 16.851560837631457}
     else if(region == 'Africa') {yourLat = -3.195734213534522; yourLng = 14.721297653247087}
      
@@ -26,7 +26,7 @@ function initMap() {
         // draggable: false,
         // scaleControl: false,
         // scrollwheel: false,
-        styles:  region == 'NorthAmerica' ? [
+        styles: [
             {
                 // "featureType": "water",
                 // "elementType": "geometry",
@@ -58,79 +58,6 @@ function initMap() {
                 "stylers": [
                     { "visibility": "off" }
                 ]
-            }, {
-            }
-        ]
-        :
-        region == 'Europe' ?
-        [
-            {
-                // "featureType": "water",
-                // "elementType": "geometry",
-                // "stylers": [
-                //     { "visibility": "off" }
-                // ]
-            }, {
-                // "featureType": "landscape",
-                // "stylers": [
-                //     { "visibility": "off" }
-                // ]
-            }, {
-                // "featureType": "road",
-                // "stylers": [
-                //     { "visibility": "off" }
-                // ]
-            }, {
-                "featureType": "poi",
-                "stylers": [
-                    { "visibility": "off" }
-                ]
-            }, {
-                "featureType": "administrative",
-                "stylers": [
-                    { "visibility": "off" }
-                ]
-            }, {
-                "elementType": "labels",
-                "stylers": [
-                    { "visibility": "off" }
-                ]
-            }, {
-            }
-        ]
-        :
-        [
-            {
-                // "featureType": "water",
-                // "elementType": "geometry",
-                // "stylers": [
-                //     { "visibility": "off" }
-                // ]
-            }, {
-                // "featureType": "landscape",
-                // "stylers": [
-                //     { "visibility": "off" }
-                // ]
-            }, {
-                // "featureType": "road",
-                // "stylers": [
-                //     { "visibility": "off" }
-                // ]
-            }, {
-                "featureType": "poi",
-                "stylers": [
-                    { "visibility": "off" }
-                ]
-            }, {
-                "featureType": "administrative",
-                "stylers": [
-                    { "visibility": "off" }
-                ]
-            }, {
-                // "elementType": "labels",
-                // "stylers": [
-                //     { "visibility": "off" }
-                // ]
             }, {
             }
         ]
