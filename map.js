@@ -11,14 +11,14 @@ const urlParams = new URLSearchParams(queryString);
 var region = region || urlParams.get('region');
 
 function initMap() {
-    var yourLat = 56.211379240824726, yourLng = -117.77755895147486;
-    if(region == 'NorthAmerica') {yourLat = 66.211379240824726; yourLng = -105.77755895147486}
-    else if(region == 'Europe') {yourLat = 56.772076393350844; yourLng = 16.851560837631457}
+    var yourLat = 51.211379240824726, yourLng = -105.77755895147486;
+    if(region == 'NorthAmerica') {yourLat = 51.211379240824726; yourLng = -105.77755895147486}
+    else if(region == 'Europe') {yourLat = 53.772076393350844; yourLng = 16.851560837631457}
     else if(region == 'Africa') {yourLat = -0; yourLng = 14.721297653247087}
      
     // Map options
     var mapOptions = {
-        zoom: region == 'NorthAmerica' ? 2.7 : region == 'Europe' ? 3.8 : 3.6,
+        zoom: region == 'NorthAmerica' ? 3.2 : region == 'Europe' ? 4.1 : 3.5,
         center: { lat: yourLat, lng: yourLng },
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         backgroundColor: '#FFF',
