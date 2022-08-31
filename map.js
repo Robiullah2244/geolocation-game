@@ -67,6 +67,33 @@ function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), mapOptions);
     var geocoder = new google.maps.Geocoder();
 
+    var swBound = undefined;
+    var neBound = undefined;
+    if(region == 'NorthAmerica') {
+        swBound = new google.maps.LatLng(15.62387327061891, -170.75475697962278);
+        neBound = new google.maps.LatLng(73.82506229496144, -52.98131947962278);
+    }
+    else if(region == 'Europe') {
+        swBound = new google.maps.LatLng(36.02143779225468, -11.042164926510884);
+        neBound = new google.maps.LatLng(69.15341713323009, 32.67731006018205);
+    }
+    else if(region == 'Africa') {
+        swBound = new google.maps.LatLng(-36.24716454475544, -18.120535893428276);
+        neBound = new google.maps.LatLng(38.44110110874602, 52.35881896497016);
+    }
+
+    if(swBound && neBound){
+        var bounds = new google.maps.LatLngBounds(swBound, neBound);
+        // map.fitBounds(bounds, 0);
+        // map.setCenter(bounds.getCenter());
+        // console.log('bounds.getCenter()', bounds.getCenter().lat(), bounds.getCenter().lng());
+        // map.strictBounds(true);
+        google.maps.event.addListenerOnce(map, 'idle', function() {
+            map.fitBounds(bounds, 0);
+            map.setCenter(bounds.getCenter());
+        });
+    }
+
     // left = -179.14162753118893  
     // top = 83.07583564181145,
     // right = -52.619445  -52.652175
