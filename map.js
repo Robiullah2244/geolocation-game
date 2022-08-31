@@ -71,7 +71,7 @@ function initMap() {
     var neBound = undefined;
     if(region == 'NorthAmerica') {
         swBound = new google.maps.LatLng(15.62387327061891, -170.75475697962278);
-        neBound = new google.maps.LatLng(73.82506229496144, -52.98131947962278);
+        neBound = new google.maps.LatLng(76.212066, -51.986069);
     }
     else if(region == 'Europe') {
         swBound = new google.maps.LatLng(36.02143779225468, -11.042164926510884);
